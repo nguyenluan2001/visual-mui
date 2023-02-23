@@ -1,7 +1,8 @@
-import { Box, InputAdornment, Stack, TextField } from '@mui/material';
+import { Box, Button, InputAdornment, Stack, TextField } from '@mui/material';
 import React from 'react';
 import magnifyIcon from '@iconify/icons-mdi/magnify';
 import { Icon } from '@iconify/react';
+import { useDrag } from 'react-dnd';
 
 const SearchBar: React.FC = () => {
   return (
@@ -30,6 +31,8 @@ const Sidebar: React.FC = () => {
         <SearchBar />
       </Box>
       <Box sx={{ flex: 1, overflowY: 'auto' }}>
+        <DragComp />
+        <DragComp />
         <Box>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -65,4 +68,29 @@ const Sidebar: React.FC = () => {
   );
 };
 
+const DragComp = () => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    item: {
+      data: [1, 2, 3],
+      type: 'Button',
+    },
+    type: 'TEST_DRAG',
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+  return (
+    <Box
+      ref={drag}
+      sx={{
+        background: isDragging ? 'red' : 'green',
+        fontSize: 25,
+        fontWeight: 'bold',
+        cursor: 'move',
+      }}
+    >
+      hello
+    </Box>
+  );
+};
 export default Sidebar;
