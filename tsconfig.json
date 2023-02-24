@@ -25,6 +25,7 @@
           "@/utils/*": ["utils/*"],
           "@/hooks": ["hooks"],
           "@/hooks/*": ["hooks/*"],
+          "@/redux": ["redux"],
           "@/redux/*": ["redux/*"],
     }
   },

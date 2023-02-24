@@ -1,205 +1,37 @@
-import { ComponentType } from 'react';
+import { Avatar, Button, Switch } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 
-export type MenuItem = {
-  children?: MenuItems;
-  soon?: boolean;
-  rootParentType?: any;
+type MenuItem = Record<string, string>;
+type MenuList = Record<string, MenuItem>;
+export const menuList: MenuList = {
+  Button: {
+    uid: uuidv4(),
+    children: 'Button text',
+    props: {
+      variant: 'contained',
+      size: 'medium',
+      color: 'success',
+    },
+  },
+  Avatar: {
+    uid: uuidv4(),
+    children: '',
+    props: {
+      src: 'public/user.png',
+    },
+  },
+  Switch: {
+    uid: uuidv4(),
+    children: '',
+    props: {},
+  },
 };
 
-type MenuItems = Partial<{
-  [k in ComponentType]: MenuItem;
-}>;
-
-export const menuItems: MenuItems = {
-  Accordion: {
-    children: {
-      Accordion: {},
-      AccordionItem: {},
-      AccordionButton: {},
-      AccordionPanel: {},
-      AccordionIcon: {},
-    },
-  },
-  Alert: {
-    children: {
-      Alert: {},
-      AlertDescription: {},
-      AlertIcon: {},
-      AlertTitle: {},
-    },
-  },
-  AspectRatio: {},
-  AvatarGroup: {
-    rootParentType: 'Avatar',
-  },
-  Avatar: {},
-  AvatarBadge: {
-    rootParentType: 'Avatar',
-  },
-  Badge: {},
-  Box: {},
-  Breadcrumb: {
-    children: {
-      BreadcrumbItem: {},
-      BreadcrumbLink: {},
-    },
-  },
-  Button: {},
-  Center: {},
-  Container: {},
-  Checkbox: {},
-  CircularProgress: {},
-  CloseButton: {},
-  Code: {},
-  Divider: {},
-  Flex: {},
-  FormControl: {
-    children: {
-      FormControl: {},
-      FormLabel: {},
-      FormHelperText: {},
-      FormErrorMessage: {},
-    },
-  },
-  Grid: {},
-  Heading: {},
-  Highlight: {},
-  Icon: {},
-  IconButton: {},
-  Image: {},
-  Input: {},
-  InputGroup: {
-    rootParentType: 'Input',
-    children: {
-      InputGroup: {},
-      Input: {},
-      InputLeftAddon: {},
-      InputRightAddon: {},
-      InputRightElement: {},
-      InputLeftElement: {},
-    },
-  },
-  Link: {},
-  List: {
-    children: {
-      List: {},
-      ListItem: {},
-    },
-  },
-  Kbd: {},
-  NumberInput: {},
-  Progress: {},
-  Radio: {},
-  RadioGroup: {
-    rootParentType: 'Radio',
-  },
-  SimpleGrid: {},
-  Spinner: {},
-  Select: {},
-  Skeleton: {},
-  SkeletonCircle: {},
-  SkeletonText: {},
-  Stack: {},
-  Stat: {
-    children: {
-      StatGroup: {},
-      Stat: {},
-      StatLabel: {},
-      StatNumber: {},
-      StatHelpText: {},
-      StatArrow: {},
-    },
-  },
-  Switch: {},
-  Tabs: {
-    children: {
-      Tabs: {},
-      Tab: {},
-      TabList: {},
-      TabPanel: {},
-      TabPanels: {},
-    },
-  },
-  Tag: {},
-  Text: {},
-  Textarea: {},
-  Menu: { soon: true },
+export const mappingComponent: Record<string, any> = {
+  Button,
+  Avatar,
+  Switch,
 };
+const componentsList: string[] = ['Button', 'Avatar', 'Switch'];
 
-export const componentsList: ComponentType[] = [
-  'Accordion',
-  'AccordionIcon',
-  'AccordionItem',
-  'AccordionPanel',
-  'Alert',
-  'AlertDescription',
-  'AlertIcon',
-  'AlertTitle',
-  'AspectRatio',
-  'Avatar',
-  'AvatarBadge',
-  'AvatarGroup',
-  'Badge',
-  'Box',
-  'Breadcrumb',
-  'BreadcrumbItem',
-  'BreadcrumbLink',
-  'Button',
-  'Center',
-  'Checkbox',
-  'CircularProgress',
-  'CloseButton',
-  'Code',
-  'Container',
-  'Divider',
-  'Editable',
-  'Flex',
-  'FormControl',
-  'FormErrorMessage',
-  'FormHelperText',
-  'FormLabel',
-  'Grid',
-  'Heading',
-  'Highlight',
-  'Icon',
-  'IconButton',
-  'Image',
-  'Input',
-  'InputGroup',
-  'InputLeftAddon',
-  'InputLeftElement',
-  'InputRightAddon',
-  'InputRightElement',
-  'Kbd',
-  'Link',
-  'List',
-  'ListIcon',
-  'ListItem',
-  'Menu',
-  'NumberInput',
-  'Progress',
-  'Radio',
-  'RadioGroup',
-  'Select',
-  'SimpleGrid',
-  'Spinner',
-  'Skeleton',
-  'SkeletonCircle',
-  'SkeletonText',
-  'Stack',
-  'Stat',
-  'StatArrow',
-  'StatGroup',
-  'StatHelpText',
-  'StatLabel',
-  'StatNumber',
-  'Switch',
-  'Tab',
-  'TabList',
-  'TabPanel',
-  'TabPanels',
-  'Tabs',
-  'Tag',
-  'Text',
-  'Textarea',
-];
+export default componentsList;

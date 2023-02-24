@@ -1,41 +1,75 @@
-import { Button } from '@mui/material';
+import { Avatar, Box, Button, Switch } from '@mui/material';
 import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+import { IComponent } from 'model';
+import { addComponent, setSelectedComponent } from '@/redux/slices/component';
+import componentsList, { mappingComponent } from '../compoentList';
 
-const componentList = {
-  Button,
-};
 function Editor() {
   const [componentRoot, setComponentRoot] = useState<any>([]);
+  const { components } = useSelector((store) => store.component);
+  console.log('🚀 ===== Editor ===== components:', components);
+  const dispatch = useDispatch();
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: 'TEST_DRAG',
+    accept: componentsList,
     drop: (item, monitor) => {
-      setComponentRoot((pre) => [...pre, item?.type]);
+      dispatch(addComponent(item));
+      // setComponentRoot((pre) => [...pre, item]);
       console.log('🚀 ===== const[{isOver},drop]=useDrop ===== item:', item);
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
   }));
-  const createComponent = (type) => {
-    return React.createElement(type, { style: {} }, 'Hello');
-  };
+  console.log('🚀 ===== Editor ===== componentRoot:', componentRoot);
+  // const createComponent = (component: { type: string; data: IComponent }) => {
+  //   return React.createElement(
+  //     mappingComponent[component?.type],
+  //     { ...component?.data?.props },
+  //     component?.data?.children
+  //   );
+  // };
   // console.log('🚀 ===== Editor ===== Test:', Test);
   return (
-    <div
+    <Box
       ref={drop}
-      style={{
+      sx={{
         width: '100%',
         height: '100%',
-        background: isOver ? 'blue' : 'black',
+        background: isOver ? '#e4e4e4' : 'white',
+        p: '20px',
+        boxSizing: 'border-box',
       }}
     >
-      {componentRoot?.map((component) =>
-        createComponent(componentList[component])
-      )}
+      {components?.map((component) => (
+        <RenderComponent component={component} />
+      ))}
       {/* <Test /> */}
-    </div>
+    </Box>
   );
 }
+const RenderComponent = ({ component }) => {
+  // const createComponent = (component: { type: string; data: IComponent }) => {
+  //   return React.createElement(
+  //     mappingComponent[component?.type],
+  //     { ...component?.data?.props },
+  //     component?.data?.children
+  //   );
+  // };
+  const dispatch = useDispatch();
+  const onClickComponent = () => {
+    dispatch(setSelectedComponent(component));
+  };
+  return (
+    <Box onClick={onClickComponent}>
+      {React.createElement(
+        mappingComponent[component?.type],
+        { ...component?.data?.props },
+        component?.data?.children
+      )}
+    </Box>
+  );
+};
 
 export default Editor;
