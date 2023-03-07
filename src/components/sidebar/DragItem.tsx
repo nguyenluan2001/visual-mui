@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import { Box, Stack, Typography } from '@mui/material';
 import { useDrag } from 'react-dnd';
 import dragIcon from '@iconify/icons-mdi/drag';
+import { v4 as uuidv4 } from 'uuid';
 
 interface DragItemProps {
   type: string;
@@ -32,6 +33,7 @@ const DragItem: React.FC<DragItemProps> = ({ type, label, value }) => {
         },
         py: 1,
         borderRadius: 2,
+        color: 'white',
       }}
       direction="row"
       spacing={2}

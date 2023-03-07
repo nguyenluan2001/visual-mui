@@ -21,13 +21,13 @@ function App() {
               <Header />
             </Box>
             <Stack direction="row" sx={{ height: '95vh' }}>
-              <Box sx={{ width: '25vh' }}>
+              <Box sx={{ width: '15vw' }}>
                 <Sidebar />
               </Box>
               <Box sx={{ flex: 1 }}>
                 <Editor />
               </Box>
-              <Box sx={{ width: '25vh' }}>
+              <Box sx={{ width: '15vw', height: '100%' }}>
                 <Inspector />
               </Box>
             </Stack>

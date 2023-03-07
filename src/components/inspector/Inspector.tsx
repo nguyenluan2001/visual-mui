@@ -2,6 +2,10 @@ import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateSelectedComponent } from '@/redux/slices/component';
+import ButtonPanel from './panels/components/ButtonPanel';
+import Header from './Header';
+import CustomCSS from './controls/CustomCss';
+import AvatarPanel from './panels/components/AvatarPanel';
 
 function Inspector() {
   const { selectedComponent = null } = useSelector((store) => store?.component);
@@ -23,8 +27,25 @@ function Inspector() {
     dispatch(updateSelectedComponent(newData));
   };
   return (
-    <Box sx={{ p: 2 }}>
-      {selectedComponent?.data?.uid &&
+    <Stack
+      direction="column"
+      sx={{
+        height: '100%',
+        borderLeft: '1px solid black',
+        boxSizing: 'border-box',
+        background: 'white',
+      }}
+    >
+      {selectedComponent && <Header />}
+      <Box
+        sx={{
+          flex: 1,
+          p: 2,
+          background: 'white',
+          boxSizing: 'border-box',
+        }}
+      >
+        {/* {selectedComponent?.data?.uid &&
         Object.entries(selectedComponent?.data?.props)?.map((item) => {
           const [key, value] = item;
           return (
@@ -36,8 +57,16 @@ function Inspector() {
         })}
       <Button variant="contained" onClick={() => handleUpdateComponent()}>
         Change
-      </Button>
-    </Box>
+      </Button> */}
+        {selectedComponent && selectedComponent.type === 'Button' && (
+          <ButtonPanel />
+        )}
+        {selectedComponent && selectedComponent.type === 'Avatar' && (
+          <AvatarPanel />
+        )}
+        {selectedComponent && <CustomCSS />}
+      </Box>
+    </Stack>
   );
 }
 
