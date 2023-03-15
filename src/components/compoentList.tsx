@@ -33,11 +33,11 @@ export const menuList: MenuList = {
   },
   Box: {
     uid: uuidv4(),
-    children: '',
+    children: [],
     props: {
       sx: {
         border: '1px dashed black',
-        height: '20px',
+        height: '50px',
         width: '100%',
       },
     },

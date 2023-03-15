@@ -5,6 +5,7 @@ import { IDnDComponent } from 'model';
 import { setSelectedComponent } from '@/redux/slices/component';
 import { mappingComponent } from '../compoentList';
 import SingleComponent from './SingleComponent';
+import HaveChildrenComponent from './HaveChildrenComponent';
 
 const RenderComponent: React.FC<{ component: IDnDComponent }> = ({
   component,
@@ -25,6 +26,9 @@ const RenderComponent: React.FC<{ component: IDnDComponent }> = ({
     case 'Avatar':
     case 'Switch': {
       return <SingleComponent component={component} />;
+    }
+    case 'Box': {
+      return <HaveChildrenComponent component={component} />;
     }
     default: {
       return <Box />;

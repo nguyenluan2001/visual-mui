@@ -18,27 +18,32 @@ function Editor() {
   const { components } = useSelector((store) => store.component);
   console.log('🚀 ===== Editor ===== components:', components);
   const dispatch = useDispatch();
-  const [{ isOver }, drop] = useDrop(() => ({
+  const [{ isOver, isOverCurrent }, drop] = useDrop(() => ({
     accept: componentsList,
     drop: (
       item: IDnDComponent,
       monitor: DropTargetMonitor<IDnDComponent, unknown>
     ) => {
-      dispatch(
-        addComponent({
-          ...item,
-          data: {
-            ...item?.data,
-            uid: uuidv4(),
-            parent: 'root',
-          },
-        })
-      );
-      // setComponentRoot((pre) => [...pre, item]);
-      console.log('🚀 ===== const[{isOver},drop]=useDrop ===== item:', item);
+      const didDrop = monitor.didDrop();
+      if (!didDrop) {
+        dispatch(
+          addComponent({
+            ...item,
+            data: {
+              ...item?.data,
+              uid: uuidv4(),
+              parent: 'root',
+            },
+          })
+        );
+        // setComponentRoot((pre) => [...pre, item]);
+        console.log('🚀 ===== const[{isOver},drop]=useDrop ===== item:', item);
+      }
     },
     collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
+      // isOver: !!monitor.isOver(),
+      isOver: monitor.isOver(),
+      isOverCurrent: monitor.isOver({ shallow: true }),
     }),
   }));
   useEffect(() => {
@@ -68,7 +73,7 @@ function Editor() {
       sx={{
         width: '100%',
         height: '100%',
-        background: isOver ? '#e4e4e4' : 'white',
+        background: isOverCurrent ? '#e4e4e4' : 'white',
         p: '20px',
         boxSizing: 'border-box',
       }}

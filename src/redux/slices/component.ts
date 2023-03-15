@@ -2,6 +2,7 @@ import { createSlice, current } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { IComponent, IDnDComponent } from 'model';
 import { v4 as uuidv4 } from 'uuid';
+import { uniqBy } from 'lodash';
 
 export interface ComponentState {
   components: IDnDComponent[] | [];
@@ -29,7 +30,38 @@ export const componentSlice = createSlice({
   initialState,
   reducers: {
     addComponent: (state, action) => {
-      state.components.push(action.payload);
+      const currentState = current(state);
+      const { data } = action.payload;
+      console.log('🚀 ===== data:', [
+        ...currentState?.components,
+        action.payload,
+      ]);
+      const components = [...currentState?.components, action.payload]?.map(
+        (item) => {
+          if (item?.data?.uid === data?.parent?.uid) {
+            // item?.data?.children.push(data?.uid);
+            // return item;
+            return {
+              ...item,
+              data: {
+                ...item?.data,
+                children: [...item?.data?.children, data?.uid],
+              },
+            };
+          }
+          return item;
+        }
+      );
+      state.components = components;
+      // if (data.parent?.uid !== 'root') {
+      //   state.components = [...currentState?.components]?.map((item) => {
+      //     if (item?.data?.uid === data?.parent?.uid) {
+      //       item?.data?.children.push(data?.uid);
+      //       return item;
+      //     }
+      //     return item;
+      //   });
+      // }
     },
     setSelectedComponent: (state, action) => {
       state.selectedComponent = action.payload;
