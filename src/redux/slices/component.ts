@@ -19,6 +19,7 @@ const initialState: ComponentState = {
           sx: {},
         },
         parent: null,
+        children: [],
       },
     },
   ],
@@ -38,20 +39,21 @@ export const componentSlice = createSlice({
       ]);
       const components = [...currentState?.components, action.payload]?.map(
         (item) => {
-          if (item?.data?.uid === data?.parent?.uid) {
+          if (item?.data?.uid === data?.parent) {
             // item?.data?.children.push(data?.uid);
             // return item;
             return {
               ...item,
               data: {
                 ...item?.data,
-                children: [...item?.data?.children, data?.uid],
+                children: [...(item?.data?.children || []), data?.uid],
               },
             };
           }
           return item;
         }
       );
+      console.log('🚀 ===== components:', components);
       state.components = components;
       // if (data.parent?.uid !== 'root') {
       //   state.components = [...currentState?.components]?.map((item) => {

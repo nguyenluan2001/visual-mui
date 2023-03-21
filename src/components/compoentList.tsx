@@ -37,8 +37,10 @@ export const menuList: MenuList = {
     props: {
       sx: {
         border: '1px dashed black',
-        height: '50px',
+        minHeight: '50px',
         width: '100%',
+        p: 2,
+        boxSizing: 'border-box',
       },
     },
   },

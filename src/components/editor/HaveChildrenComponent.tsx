@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { IDnDComponent } from 'model';
-import React, { useEffect, useState } from 'react';
+import React, { ReactEventHandler, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
@@ -15,6 +15,12 @@ const HaveChildrenComponent: React.FC<{ component: IDnDComponent }> = ({
   const [childrenComponents, setChildrenComponents] = useState<IDnDComponent[]>(
     []
   );
+  const dispatch = useDispatch();
+  const onClickComponent = (e: MouseEvent, comp: IDnDComponent) => {
+    e.stopPropagation();
+    console.log('====== event ====', e.currentTarget);
+    dispatch(setSelectedComponent(comp));
+  };
   useEffect(() => {
     if (!isEmpty(components)) {
       setChildrenComponents(
@@ -24,15 +30,18 @@ const HaveChildrenComponent: React.FC<{ component: IDnDComponent }> = ({
           })
           ?.map((item) => {
             return React.createElement(
-              mappingComponent[component?.type],
-              { ...component?.data?.props },
+              mappingComponent[item?.type],
+              {
+                ...item?.data?.props,
+                onClick: (e) => onClickComponent(e, item),
+                key: item?.data?.uid,
+              },
               item?.data?.props?.children
             );
           })
       );
     }
   }, [components]);
-  const dispatch = useDispatch();
   const [{ isOver, isOverCurrent }, drop] = useDrop(() => ({
     accept: componentsList,
     drop: (
@@ -59,12 +68,9 @@ const HaveChildrenComponent: React.FC<{ component: IDnDComponent }> = ({
       };
     },
   }));
-  const onClickComponent = () => {
-    dispatch(setSelectedComponent(component));
-  };
   return (
     <Box
-      onClick={onClickComponent}
+      onClick={(e) => onClickComponent(e, component)}
       sx={{
         background: isOverCurrent ? '#a9defb' : 'white',
       }}
