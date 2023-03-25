@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React from 'react';
+import React, { Children } from 'react';
 import { useDispatch } from 'react-redux';
 import { IDnDComponent } from 'model';
 import { setSelectedComponent } from '@/redux/slices/component';
@@ -7,9 +7,12 @@ import { mappingComponent } from '../compoentList';
 import SingleComponent from './SingleComponent';
 import HaveChildrenComponent from './HaveChildrenComponent';
 
-const RenderComponent: React.FC<{ component: IDnDComponent }> = ({
-  component,
-}) => {
+const RenderComponent: React.FC<{
+  component: IDnDComponent;
+  children: IDnDComponent[] | null;
+}> = ({ component, children }) => {
+  console.log('🚀 ===== component:', component);
+  console.log('🚀 ===== children:', children);
   // const createComponent = (component: { type: string; data: IComponent }) => {
   //   return React.createElement(
   //     mappingComponent[component?.type],
@@ -28,7 +31,11 @@ const RenderComponent: React.FC<{ component: IDnDComponent }> = ({
       return <SingleComponent component={component} />;
     }
     case 'Box': {
-      return <HaveChildrenComponent component={component} />;
+      return (
+        <HaveChildrenComponent component={component}>
+          {children}
+        </HaveChildrenComponent>
+      );
     }
     default: {
       return <Box />;

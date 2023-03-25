@@ -9,7 +9,8 @@ const SingleComponent: React.FC<{ component: IDnDComponent }> = ({
   component,
 }) => {
   const dispatch = useDispatch();
-  const onClickComponent = () => {
+  const onClickComponent = (e: MouseEvent) => {
+    e.stopPropagation();
     dispatch(setSelectedComponent(component));
   };
   return (

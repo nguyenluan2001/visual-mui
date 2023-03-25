@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Switch } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { IComponent, IDnDComponent } from 'model';
@@ -11,6 +11,7 @@ import component, {
 } from '@/redux/slices/component';
 import componentsList, { mappingComponent } from '../compoentList';
 import RenderComponent from './RenderComponent';
+import recursionComponents from '@/utils/recursionComponents';
 
 function Editor() {
   const [componentRoot, setComponentRoot] = useState<any>(null);
@@ -67,6 +68,14 @@ function Editor() {
   //   );
   // };
   // console.log('🚀 ===== Editor ===== Test:', Test);
+  const renderComponents = useMemo(() => {
+    const root = components?.find((item) => item?.data?.uid === 'root');
+    return recursionComponents(root, components);
+  }, [components]);
+  console.log(
+    '🚀 ===== renderComponents ===== renderComponents:',
+    renderComponents
+  );
   return (
     <Box
       ref={drop}
@@ -80,11 +89,12 @@ function Editor() {
       onClick={onClickEditor}
       data-component="root"
     >
-      {components
+      {renderComponents}
+      {/* {components
         ?.filter((component) => component?.data?.parent === 'root')
         ?.map((component) => (
           <RenderComponent component={component} />
-        ))}
+        ))} */}
       {/* <Test /> */}
     </Box>
   );

@@ -7,57 +7,63 @@ import { v4 as uuidv4 } from 'uuid';
 import { isEmpty } from 'lodash';
 import { addComponent, setSelectedComponent } from '@/redux/slices/component';
 import componentsList, { mappingComponent } from '../compoentList';
+import RenderComponent from './RenderComponent';
 
-const HaveChildrenComponent: React.FC<{ component: IDnDComponent }> = ({
-  component,
-}) => {
+const HaveChildrenComponent: React.FC<{
+  component: IDnDComponent;
+  children: IDnDComponent[];
+}> = ({ component, children }) => {
   const { components } = useSelector((store) => store.component);
-  const [childrenComponents, setChildrenComponents] = useState<IDnDComponent[]>(
-    []
-  );
+  // const [childrenComponents, setChildrenComponents] = useState<IDnDComponent[]>(
+  //   []
+  // );
   const dispatch = useDispatch();
   const onClickComponent = (e: MouseEvent, comp: IDnDComponent) => {
     e.stopPropagation();
     console.log('====== event ====', e.currentTarget);
     dispatch(setSelectedComponent(comp));
   };
-  useEffect(() => {
-    if (!isEmpty(components)) {
-      setChildrenComponents(
-        components
-          ?.filter((item) => {
-            return component?.data?.children?.includes(item?.data?.uid);
-          })
-          ?.map((item) => {
-            return React.createElement(
-              mappingComponent[item?.type],
-              {
-                ...item?.data?.props,
-                onClick: (e) => onClickComponent(e, item),
-                key: item?.data?.uid,
-              },
-              item?.data?.props?.children
-            );
-          })
-      );
-    }
-  }, [components]);
+  // useEffect(() => {
+  //   if (!isEmpty(components)) {
+  //     setChildrenComponents(
+  //       components
+  //         ?.filter((item: IDnDComponent) => {
+  //           return component?.data?.children?.includes(item?.data?.uid);
+  //         })
+  //         ?.map((item: IDnDComponent) => {
+  //           // return React.createElement(
+  //           //   mappingComponent[item?.type],
+  //           //   {
+  //           //     ...item?.data?.props,
+  //           //     onClick: (e) => onClickComponent(e, item),
+  //           //     key: item?.data?.uid,
+  //           //   },
+  //           //   item?.data?.props?.children
+  //           // );
+  //           return <RenderComponent component={item} />;
+  //         })
+  //     );
+  //   }
+  // }, [components]);
   const [{ isOver, isOverCurrent }, drop] = useDrop(() => ({
     accept: componentsList,
     drop: (
       item: IDnDComponent,
       monitor: DropTargetMonitor<IDnDComponent, unknown>
     ) => {
-      dispatch(
-        addComponent({
-          ...item,
-          data: {
-            ...item?.data,
-            uid: uuidv4(),
-            parent: component?.data?.uid,
-          },
-        })
-      );
+      const didDrop = monitor.didDrop();
+      if (!didDrop) {
+        dispatch(
+          addComponent({
+            ...item,
+            data: {
+              ...item?.data,
+              uid: uuidv4(),
+              parent: component?.data?.uid,
+            },
+          })
+        );
+      }
       // setComponentRoot((pre) => [...pre, item]);
     },
     collect: (monitor) => {
@@ -72,14 +78,22 @@ const HaveChildrenComponent: React.FC<{ component: IDnDComponent }> = ({
     <Box
       onClick={(e) => onClickComponent(e, component)}
       sx={{
-        background: isOverCurrent ? '#a9defb' : 'white',
+        ...component?.data?.props?.sx,
+        background: isOverCurrent
+          ? '#a9defb'
+          : component?.data?.props?.sx?.background,
       }}
       ref={drop}
     >
+      {/* {React.createElement(
+        mappingComponent[component?.type],
+        { ...component?.data?.props },
+        childrenCompoents
+      )} */}
       {React.createElement(
         mappingComponent[component?.type],
         { ...component?.data?.props },
-        childrenComponents
+        children
       )}
     </Box>
   );
