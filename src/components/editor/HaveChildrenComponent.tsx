@@ -75,27 +75,31 @@ const HaveChildrenComponent: React.FC<{
     },
   }));
   return (
-    <Box
-      onClick={(e) => onClickComponent(e, component)}
-      sx={{
-        ...component?.data?.props?.sx,
-        background: isOverCurrent
-          ? '#a9defb'
-          : component?.data?.props?.sx?.background,
-      }}
-      ref={drop}
-    >
-      {/* {React.createElement(
-        mappingComponent[component?.type],
-        { ...component?.data?.props },
-        childrenCompoents
-      )} */}
+    // <Box
+    //   onClick={(e) => onClickComponent(e, component)}
+    //   sx={{
+    //     background: isOverCurrent ? '#a9defb' : 'white',
+    //   }}
+    //   ref={drop}
+    // >
+    // </Box>
+    <>
       {React.createElement(
         mappingComponent[component?.type],
-        { ...component?.data?.props },
+        {
+          ...component?.data?.props,
+          sx: {
+            ...component?.data?.props?.sx,
+            background: isOverCurrent
+              ? '#a9defb'
+              : `${component?.data?.props?.sx?.background || 'white'}`,
+          },
+          onClick: (e) => onClickComponent(e, component),
+          ref: drop,
+        },
         children
       )}
-    </Box>
+    </>
   );
 };
 

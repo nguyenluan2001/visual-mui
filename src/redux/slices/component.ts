@@ -7,6 +7,7 @@ import { uniqBy } from 'lodash';
 export interface ComponentState {
   components: IDnDComponent[] | [];
   selectedComponent: IDnDComponent | null;
+  isLoading?: boolean;
 }
 
 const initialState: ComponentState = {
@@ -24,12 +25,19 @@ const initialState: ComponentState = {
     },
   ],
   selectedComponent: null,
+  isLoading: false,
 };
 
 export const componentSlice = createSlice({
   name: 'component',
   initialState,
   reducers: {
+    initComponents: (state, action) => {
+      state.components = action.payload;
+    },
+    updateLoadingStatus: (state, action) => {
+      state.isLoading = action.payload;
+    },
     addComponent: (state, action) => {
       const currentState = current(state);
       const { data } = action.payload;
@@ -97,15 +105,22 @@ export const componentSlice = createSlice({
       });
       state.selectedComponent = null;
     },
+    clearComponents: (state) => {
+      state.components = initialState.components;
+      state.selectedComponent = initialState.selectedComponent;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
 export const {
+  initComponents,
   addComponent,
   setSelectedComponent,
   updateSelectedComponent,
   removeSelectedComponent,
+  updateLoadingStatus,
+  clearComponents,
 } = componentSlice.actions;
 
 export default componentSlice.reducer;

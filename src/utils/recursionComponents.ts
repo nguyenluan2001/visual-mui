@@ -1,25 +1,33 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
+import { IDnDComponent } from 'model';
 import RenderComponent from '@/components/editor/RenderComponent';
 import { mappingComponent } from '@/components/compoentList';
 
-const recursionComponents = (component, components) => {
+const recursionComponents = (
+  component: IDnDComponent,
+  components: IDnDComponent[]
+): IDnDComponent | ReactElement => {
   //   console.log('🚀 ===== recursionComponents ===== component:', component);
   if (component?.data?.children?.length === 0) {
-    return React.createElement(RenderComponent, {
-      component,
-    });
+    return React.createElement(
+      RenderComponent,
+      {
+        component: component as IDnDComponent,
+      },
+      null
+    );
   }
-  const childrenComponents = [];
-  const uids =
+  const childrenComponents: (IDnDComponent | ReactElement)[] = [];
+  const uids: string[] =
     typeof component?.data?.children === 'object'
       ? component?.data?.children
       : [];
+  // eslint-disable-next-line no-restricted-syntax
   for (const uid of uids) {
-    const _comp = components?.find((item) => item?.data?.uid === uid);
-    childrenComponents.push(recursionComponents(_comp, components));
-    // if (_comp?.data?.children?.length !== 0) {
-    // }
-    // childrenComponents.push(_comp);
+    const comp: IDnDComponent = components?.find(
+      (item: IDnDComponent) => item?.data?.uid === uid
+    ) as IDnDComponent;
+    childrenComponents.push(recursionComponents(comp, components));
   }
   if (component?.data?.uid === 'root') {
     return React.createElement(
@@ -36,10 +44,5 @@ const recursionComponents = (component, components) => {
     },
     childrenComponents
   );
-  //   return React.createElement(
-  //     mappingComponent[component?.type],
-  //     { ...component?.data?.props },
-  //     childrenComponents
-  //   );
 };
 export default recursionComponents;

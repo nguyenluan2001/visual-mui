@@ -12,11 +12,12 @@ import component, {
 import componentsList, { mappingComponent } from '../compoentList';
 import RenderComponent from './RenderComponent';
 import recursionComponents from '@/utils/recursionComponents';
+import Loader from '../common/Loader';
 
 function Editor() {
   const [componentRoot, setComponentRoot] = useState<any>(null);
   console.log('🚀 ===== Editor ===== componentRoot:', componentRoot);
-  const { components } = useSelector((store) => store.component);
+  const { components, isLoading } = useSelector((store) => store.component);
   console.log('🚀 ===== Editor ===== components:', components);
   const dispatch = useDispatch();
   const [{ isOver, isOverCurrent }, drop] = useDrop(() => ({
@@ -76,6 +77,7 @@ function Editor() {
     '🚀 ===== renderComponents ===== renderComponents:',
     renderComponents
   );
+  if (isLoading) return <Loader />;
   return (
     <Box
       ref={drop}
