@@ -8,7 +8,10 @@ import {
 import { store } from '@/redux/store';
 
 const useStorage = () => {
-  const [value, setValue, remove] = useLocalStorage('components', '');
+  const [value, setValue, remove] = useLocalStorage(
+    'components',
+    '[{"type":"Box","data": {"uid":"root"} }]'
+  );
   const { components } = useSelector((store) => store?.component);
   const dispatch = useDispatch();
   const saveComponents = () => {

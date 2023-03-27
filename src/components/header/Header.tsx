@@ -71,9 +71,20 @@ function Header() {
             checked={isOpenCodePanel}
             onChange={handleToggleCodePanel}
             name="jason"
+            color="success"
           />
         }
-        label="Jason Killian"
+        sx={{
+          '& .MuiTypography-root': {
+            color: 'white',
+          },
+          '& .MuiSwitch-track': {
+            background: 'white',
+          },
+          overflow: 'hidden',
+          ml: 5,
+        }}
+        label="Code Panel"
       />
       <Dialog open={isOpenDialog} onClose={handleCloseDialog}>
         <DialogTitle

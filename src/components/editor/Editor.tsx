@@ -21,6 +21,7 @@ import CodePanel from '../CodePanel';
 function Editor() {
   const [componentRoot, setComponentRoot] = useState<any>(null);
   const { components, isLoading } = useSelector((store) => store.component);
+  const { isOpenCodePanel } = useSelector((store) => store.editor);
   const dispatch = useDispatch();
   const [sizes, setSizes] = useState(['50%', '50%']);
 
@@ -82,6 +83,32 @@ function Editor() {
     renderComponents
   );
   if (isLoading) return <Loader />;
+  if (!isOpenCodePanel)
+    return (
+      <Box sx={{ width: '100%', height: '100%' }}>
+        <Box
+          ref={drop}
+          sx={{
+            width: '100%',
+            height: '100%',
+            background: isOverCurrent ? '#e4e4e4' : 'white',
+            p: '20px',
+            boxSizing: 'border-box',
+            overflow: 'auto',
+          }}
+          onClick={onClickEditor}
+          data-component="root"
+        >
+          {renderComponents}
+          {/* {components
+        ?.filter((component) => component?.data?.parent === 'root')
+        ?.map((component) => (
+          <RenderComponent component={component} />
+        ))} */}
+          {/* <Test /> */}
+        </Box>
+      </Box>
+    );
   return (
     <Box sx={{ width: '100%', height: '100%' }}>
       <SplitPane split="horizontal" onChange={setSizes} sizes={sizes}>

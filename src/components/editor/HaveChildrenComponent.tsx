@@ -13,7 +13,9 @@ const HaveChildrenComponent: React.FC<{
   component: IDnDComponent;
   children: IDnDComponent[];
 }> = ({ component, children }) => {
-  const { components } = useSelector((store) => store.component);
+  const { components, selectedComponent } = useSelector(
+    (store) => store.component
+  );
   // const [childrenComponents, setChildrenComponents] = useState<IDnDComponent[]>(
   //   []
   // );
@@ -90,6 +92,10 @@ const HaveChildrenComponent: React.FC<{
           ...component?.data?.props,
           sx: {
             ...component?.data?.props?.sx,
+            border:
+              component?.data?.uid === selectedComponent?.data?.uid
+                ? '2px solid blue'
+                : component?.data?.props?.sx?.border,
             background: isOverCurrent
               ? '#a9defb'
               : `${component?.data?.props?.sx?.background || 'white'}`,

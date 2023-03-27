@@ -18,7 +18,7 @@ const CodePanel = () => {
   const [code, setCode] = useState<string>(exampleCode);
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const highlight = (_code: string): ReactElement => (
-    <Highlight {...defaultProps} theme={theme} code={_code} language="css">
+    <Highlight {...defaultProps} theme={theme} code={_code} language="jsx">
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <>
           {tokens.map((line, i) => (
