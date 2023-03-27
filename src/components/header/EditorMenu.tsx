@@ -27,6 +27,10 @@ const EditorMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleImport = (e) => {
+    importComponents(e);
+    setAnchorEl(null);
+  };
   return (
     <>
       <Button
@@ -43,7 +47,7 @@ const EditorMenu = () => {
       </Button>
       <Input
         id="import"
-        onChange={importComponents}
+        onChange={handleImport}
         type="file"
         sx={{ display: 'none' }}
       />

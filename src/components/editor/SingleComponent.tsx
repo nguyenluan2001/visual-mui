@@ -13,14 +13,10 @@ const SingleComponent: React.FC<{ component: IDnDComponent }> = ({
     e.stopPropagation();
     dispatch(setSelectedComponent(component));
   };
-  return (
-    <Box onClick={onClickComponent}>
-      {React.createElement(
-        mappingComponent[component?.type],
-        { ...component?.data?.props },
-        component?.data?.props?.children
-      )}
-    </Box>
+  return React.createElement(
+    mappingComponent[component?.type],
+    { ...component?.data?.props, onClick: (e) => onClickComponent(e) },
+    component?.data?.props?.children
   );
 };
 
