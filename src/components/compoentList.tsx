@@ -6,6 +6,7 @@ type MenuList = Record<string, MenuItem>;
 export const menuList: MenuList = {
   Button: {
     uid: uuidv4(),
+    directory: '@mui/material',
     props: {
       children: 'Button text',
       variant: 'contained',
@@ -17,6 +18,7 @@ export const menuList: MenuList = {
   },
   Avatar: {
     uid: uuidv4(),
+    directory: '@mui/material',
     children: '',
     props: {
       variant: 'square',
@@ -26,6 +28,7 @@ export const menuList: MenuList = {
   },
   Switch: {
     uid: uuidv4(),
+    directory: '@mui/material/lab',
     children: '',
     props: {
       sx: {},
@@ -33,6 +36,7 @@ export const menuList: MenuList = {
   },
   Box: {
     uid: uuidv4(),
+    directory: '@mui/material',
     children: [],
     props: {
       sx: {

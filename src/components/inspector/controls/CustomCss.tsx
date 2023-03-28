@@ -13,6 +13,7 @@ import { Box, Typography } from '@mui/material';
 import { trim } from 'lodash';
 import { useSelector } from 'react-redux';
 import useForm from '@/hooks/useForm';
+import { convertCssToString, convertStringToCss } from '@/utils/codeEditor ';
 
 const exampleCode = ``;
 
@@ -22,27 +23,6 @@ const styles = {
     fontFamily: '"Dank Mono", "Fira Code", monospace',
     ...theme.plain,
   },
-};
-const convertStringToCss = (string: string) => {
-  const properties = string?.split(',');
-  const css = properties?.reduce(
-    (pre: Record<string, string>, current: string) => {
-      const [key, value] = current.split(':');
-      return {
-        ...pre,
-        [trim(key)]: isNaN(trim(value)) ? trim(value) : +trim(value),
-      };
-    },
-    {}
-  );
-  return css;
-};
-const convertCssToString = (css: Record<string, string>): string => {
-  return Object.entries(css)?.reduce((pre, current) => {
-    const [key, value] = current;
-    const result = `${pre}${key}:${value},` + `\n`;
-    return result;
-  }, '');
 };
 const CustomCSS = () => {
   const [code, setCode] = useState<string>(exampleCode);

@@ -14,7 +14,7 @@ import component, {
 } from '@/redux/slices/component';
 import componentsList, { mappingComponent } from '../compoentList';
 import RenderComponent from './RenderComponent';
-import recursionComponents from '@/utils/recursionComponents';
+import { recursionComponents, recursionImport } from '@/utils/recursion';
 import Loader from '../common/Loader';
 import CodePanel from '../CodePanel';
 
@@ -78,10 +78,11 @@ function Editor() {
     const root = components?.find((item) => item?.data?.uid === 'root');
     return recursionComponents(root, components);
   }, [components]);
-  console.log(
-    '🚀 ===== renderComponents ===== renderComponents:',
-    renderComponents
-  );
+  const renderImport = useMemo(() => {
+    const root = components?.find((item) => item?.data?.uid === 'root');
+    return recursionImport(root, components);
+  }, [components]);
+  console.log('🚀 ===== renderImport ===== renderImport:', renderImport);
   if (isLoading) return <Loader />;
   if (!isOpenCodePanel)
     return (

@@ -1,8 +1,10 @@
 import { Box, Button } from '@mui/material';
 import Highlight, { defaultProps } from 'prism-react-renderer';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import Editor from 'react-simple-code-editor';
 import theme from 'prism-react-renderer/themes/nightOwl';
+import { useSelector } from 'react-redux';
+import { recursionComponentCode, recursionImport } from '@/utils/recursion';
 
 const exampleCode = ``;
 
@@ -17,6 +19,7 @@ const styles = {
 const CodePanel = () => {
   const [code, setCode] = useState<string>(exampleCode);
   const [isCopied, setIsCopied] = useState<boolean>(false);
+  const { components } = useSelector((store) => store.component);
   const highlight = (_code: string): ReactElement => (
     <Highlight {...defaultProps} theme={theme} code={_code} language="jsx">
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
@@ -32,6 +35,12 @@ const CodePanel = () => {
       )}
     </Highlight>
   );
+  useEffect(() => {
+    const root = components?.find((item) => item?.data?.uid === 'root');
+    const importCode = recursionImport(root, components);
+    const componentCode = recursionComponentCode(root, components);
+    setCode(() => importCode+componentCode);
+  }, [components]);
   const onValueChange = (_code: string): void => {
     setCode(_code);
   };
