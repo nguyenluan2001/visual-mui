@@ -44,7 +44,6 @@ function Editor() {
           })
         );
         // setComponentRoot((pre) => [...pre, item]);
-        console.log('🚀 ===== const[{isOver},drop]=useDrop ===== item:', item);
       }
     },
     collect: (monitor) => ({
@@ -60,7 +59,6 @@ function Editor() {
     }
   }, [components]);
   const onClickEditor = (e) => {
-    console.log('==== e ====', e.target);
     const componentType = e.target.dataset.component;
     if (componentType === 'root' && componentRoot) {
       dispatch(setSelectedComponent(componentRoot));
@@ -82,7 +80,6 @@ function Editor() {
     const root = components?.find((item) => item?.data?.uid === 'root');
     return recursionImport(root, components);
   }, [components]);
-  console.log('🚀 ===== renderImport ===== renderImport:', renderImport);
   if (isLoading) return <Loader />;
   if (!isOpenCodePanel)
     return (
@@ -121,6 +118,7 @@ function Editor() {
             background: isOverCurrent ? '#e4e4e4' : 'white',
             p: '20px',
             boxSizing: 'border-box',
+            overflow: 'auto',
           }}
           onClick={onClickEditor}
           data-component="root"

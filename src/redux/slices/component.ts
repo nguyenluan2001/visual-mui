@@ -2,7 +2,7 @@ import { createSlice, current } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { IComponent, IDnDComponent } from 'model';
 import { v4 as uuidv4 } from 'uuid';
-import { uniqBy } from 'lodash';
+import { uniqBy, remove } from 'lodash';
 
 export interface ComponentState {
   components: IDnDComponent[] | [];
@@ -89,11 +89,28 @@ export const componentSlice = createSlice({
     },
     removeSelectedComponent: (state, action) => {
       const currentState = current(state);
-      state.components = currentState?.components?.filter((component) => {
-        return (
-          component?.data?.uid !== currentState?.selectedComponent?.data?.uid
-        );
-      });
+      const selectedComponent = currentState?.selectedComponent;
+      const newComponents = currentState?.components
+        ?.filter((component) => {
+          return (
+            component?.data?.uid !== currentState?.selectedComponent?.data?.uid
+          );
+        })
+        ?.map((component) => {
+          if (selectedComponent?.data?.parent === component?.data?.uid) {
+            return {
+              ...component,
+              data: {
+                ...component?.data,
+                children: component?.data?.children?.filter(
+                  (item) => item !== selectedComponent?.data?.uid
+                ),
+              },
+            };
+          }
+          return component;
+        });
+      state.components = newComponents;
       state.selectedComponent = null;
     },
     duplicateComponent: (state, action) => {

@@ -6,13 +6,28 @@ import { capitalize } from 'lodash';
 
 import { Icon } from '@iconify/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeSelectedComponent } from '@/redux/slices/component';
+import { v4 as uuidv4 } from 'uuid';
+import {
+  addComponent,
+  removeSelectedComponent,
+} from '@/redux/slices/component';
 
 const Header = () => {
   const { selectedComponent } = useSelector((store) => store.component);
   const dispatch = useDispatch();
   const onRemoveComponent = () => {
     dispatch(removeSelectedComponent());
+  };
+  const onDuplicateComponent = () => {
+    dispatch(
+      addComponent({
+        ...selectedComponent,
+        data: {
+          ...selectedComponent?.data,
+          uid: uuidv4(),
+        },
+      })
+    );
   };
   return (
     <Box sx={{ width: '100%' }}>
@@ -33,7 +48,7 @@ const Header = () => {
         spacing={2}
         sx={{ p: 1 }}
       >
-        <IconButton>
+        <IconButton onClick={onDuplicateComponent}>
           <Icon icon={contentDuplicate} style={{ fontSize: '1rem' }} />
         </IconButton>
         <IconButton>

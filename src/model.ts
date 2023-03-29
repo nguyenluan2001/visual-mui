@@ -3,6 +3,7 @@ export interface IComponent {
   children: string | any;
   props: Record<string, string>;
   directory: string;
+  parent: string;
 }
 
 export interface IDnDComponent {
