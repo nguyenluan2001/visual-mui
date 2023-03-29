@@ -133,7 +133,9 @@ function Editor() {
         ))} */}
           {/* <Test /> */}
         </Box>
-        <CodePanel />
+        <Pane maxSize="70%">
+          <CodePanel />
+        </Pane>
       </SplitPane>
     </Box>
   );

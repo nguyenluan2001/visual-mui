@@ -1,3 +1,5 @@
+import { trim } from 'lodash';
+
 const convertStringToCss = (string: string) => {
   const properties = string?.split(',');
   const css = properties?.reduce(
@@ -12,11 +14,22 @@ const convertStringToCss = (string: string) => {
   );
   return css;
 };
-const convertCssToString = (css: Record<string, string>): string => {
+const convertCssToString = (
+  css: Record<string, string>,
+  isDoubleQuote = false
+): string => {
   return Object.entries(css)?.reduce((pre, current) => {
     const [key, value] = current;
-    const result = `${pre}${key}:${value},` + `\n`;
-    return result;
+    if (key) {
+      let result = '';
+      if (isDoubleQuote) {
+        result = `${pre}${key}:"${value}",` + `\n`;
+      } else {
+        result = `${pre}${key}:${value},` + `\n`;
+      }
+      return result;
+    }
+    return pre;
   }, '');
 };
 export { convertCssToString, convertStringToCss };
