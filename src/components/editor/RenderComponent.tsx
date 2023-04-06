@@ -9,7 +9,7 @@ import HaveChildrenComponent from './HaveChildrenComponent';
 
 const RenderComponent: React.FC<{
   component: IDnDComponent;
-  children: IDnDComponent[] | null;
+  children: (IDnDComponent | ReactNode)[] | null;
 }> = ({ component, children }) => {
   console.log('🚀 ===== component:', component);
   console.log('🚀 ===== children:', children);

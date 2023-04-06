@@ -26,6 +26,7 @@ const initialState: ComponentState = {
   ],
   selectedComponent: null,
   isLoading: false,
+  isHistory: false,
 };
 
 export const componentSlice = createSlice({
@@ -63,6 +64,7 @@ export const componentSlice = createSlice({
       );
       console.log('🚀 ===== components:', components);
       state.components = components;
+      state.isHistory = false;
       // if (data.parent?.uid !== 'root') {
       //   state.components = [...currentState?.components]?.map((item) => {
       //     if (item?.data?.uid === data?.parent?.uid) {
@@ -126,6 +128,9 @@ export const componentSlice = createSlice({
       state.components = initialState.components;
       state.selectedComponent = initialState.selectedComponent;
     },
+    updateComponentHistory: (state, action) => {
+      state.isHistory = action.payload;
+    },
   },
 });
 
@@ -138,6 +143,7 @@ export const {
   removeSelectedComponent,
   updateLoadingStatus,
   clearComponents,
+  updateComponentHistory,
 } = componentSlice.actions;
 
 export default componentSlice.reducer;

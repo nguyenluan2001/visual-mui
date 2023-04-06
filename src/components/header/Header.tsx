@@ -15,15 +15,20 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon } from '@iconify/react';
 import closeIcon from '@iconify/icons-mdi/close';
+import arrowULeftTop from '@iconify/icons-mdi/arrow-u-left-top';
+import arrowURightTop from '@iconify/icons-mdi/arrow-u-right-top';
 import { useStorage } from '@/hooks/useStorage';
 import EditorMenu from './EditorMenu';
 import { clearComponents } from '@/redux/slices/component';
 import { toggleCodePanel } from '@/redux/slices/editor';
+import { useHistory } from '@/hooks/useHistory';
+import { RootState } from '@/redux/store';
 
 function Header() {
-  const { components } = useSelector((store) => store?.component);
-  const { isOpenCodePanel } = useSelector((store) => store.editor);
+  const { components } = useSelector((store: RootState) => store?.component);
+  const { isOpenCodePanel } = useSelector((store: RootState) => store.editor);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+  const { saveHistory, previousVersion, nextVersion } = useHistory();
   const dispatch = useDispatch();
   const handleClickClear = () => {
     setIsOpenDialog(true);
@@ -37,6 +42,13 @@ function Header() {
   };
   const handleToggleCodePanel = () => {
     dispatch(toggleCodePanel(!isOpenCodePanel));
+  };
+  const handleViewHistory = (direction: string) => {
+    if (direction === 'previous') {
+      previousVersion();
+    } else {
+      nextVersion();
+    }
   };
   return (
     <Stack
@@ -86,6 +98,18 @@ function Header() {
         }}
         label="Code Panel"
       />
+      <Stack direction="row" alignItems="center">
+        <Icon
+          icon={arrowULeftTop}
+          style={{ color: 'white', cursor: 'pointer', fontSize: '24px' }}
+          onClick={() => handleViewHistory('previous')}
+        />
+        <Icon
+          icon={arrowURightTop}
+          style={{ color: 'white', cursor: 'pointer', fontSize: '24px' }}
+          onClick={() => handleViewHistory('next')}
+        />
+      </Stack>
       <Dialog open={isOpenDialog} onClose={handleCloseDialog}>
         <DialogTitle
           sx={{

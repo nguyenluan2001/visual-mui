@@ -13,7 +13,9 @@ import { trim } from 'lodash';
 import contentCopy from '@iconify/icons-mdi/content-copy';
 import trayArrowDown from '@iconify/icons-mdi/tray-arrow-down';
 import { Icon } from '@iconify/react';
+import { IDnDComponent } from 'model';
 import { recursionComponentCode, recursionImport } from '@/utils/recursion';
+import { RootState } from '@/redux/store';
 
 const exampleCode = ``;
 
@@ -29,15 +31,15 @@ const styles = {
 const CodePanel = () => {
   const [code, setCode] = useState<string>(exampleCode);
   const [isCopied, setIsCopied] = useState<boolean>(false);
-  const { components } = useSelector((store) => store.component);
+  const { components } = useSelector((store: RootState) => store.component);
   const highlight = (_code: string): ReactElement => (
     <Highlight {...defaultProps} theme={theme} code={_code} language="jsx">
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <>
           {tokens.map((line, i) => (
-            <div {...getLineProps({ line, key: i })}>
+            <div {...getLineProps({ line, key: i })} key={line}>
               {line.map((token, key) => (
-                <span {...getTokenProps({ token, key })} />
+                <span {...getTokenProps({ token, key })} key={token} />
               ))}
             </div>
           ))}
@@ -46,7 +48,9 @@ const CodePanel = () => {
     </Highlight>
   );
   useEffect(() => {
-    const root = components?.find((item) => item?.data?.uid === 'root');
+    const root = components?.find(
+      (item) => item?.data?.uid === 'root'
+    ) as IDnDComponent;
     const importCode = recursionImport(root, components);
     const componentCode = recursionComponentCode(root, components);
     const joinCode = trim(importCode + componentCode);

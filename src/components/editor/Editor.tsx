@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Switch } from '@mui/material';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { IComponent, IDnDComponent } from 'model';
@@ -17,11 +17,17 @@ import RenderComponent from './RenderComponent';
 import { recursionComponents, recursionImport } from '@/utils/recursion';
 import Loader from '../common/Loader';
 import CodePanel from '../CodePanel';
+import { RootState } from '@/redux/store';
 
 function Editor() {
   const [componentRoot, setComponentRoot] = useState<any>(null);
-  const { components, isLoading } = useSelector((store) => store.component);
-  const { isOpenCodePanel } = useSelector((store) => store.editor);
+  const {
+    components,
+    isLoading,
+  }: { components: IDnDComponent[] | []; isLoading?: boolean } = useSelector(
+    (store: RootState) => store.component
+  );
+  const { isOpenCodePanel } = useSelector((store: RootState) => store.editor);
   const dispatch = useDispatch();
   const [sizes, setSizes] = useState(['50%', '50%']);
 
@@ -54,8 +60,10 @@ function Editor() {
   }));
   useEffect(() => {
     if (!isEmpty(components)) {
-      const component = components?.find((item) => item?.type === 'Box');
-      setComponentRoot(component);
+      const root: IDnDComponent | undefined = components?.find(
+        (item) => item?.type === 'Box'
+      );
+      setComponentRoot(root);
     }
   }, [components]);
   const onClickEditor = (e) => {
@@ -73,13 +81,15 @@ function Editor() {
   // };
   // console.log('🚀 ===== Editor ===== Test:', Test);
   const renderComponents = useMemo(() => {
-    const root = components?.find((item) => item?.data?.uid === 'root');
-    return recursionComponents(root, components);
-  }, [components]);
-  const renderImport = useMemo(() => {
-    const root = components?.find((item) => item?.data?.uid === 'root');
-    return recursionImport(root, components);
-  }, [components]);
+    const root: IDnDComponent | undefined = components?.find(
+      (item) => item?.data?.uid === 'root'
+    );
+    return recursionComponents(root as IDnDComponent, components);
+  }, [components]) as ReactNode;
+  // const renderImport = useMemo(() => {
+  //   const root = components?.find((item) => item?.data?.uid === 'root');
+  //   return recursionImport(root, components);
+  // }, [components]);
   if (isLoading) return <Loader />;
   if (!isOpenCodePanel)
     return (

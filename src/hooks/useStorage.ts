@@ -3,6 +3,7 @@ import { useLocalStorage } from 'react-use';
 import {
   initComponents,
   loadComponentDone,
+  updateComponentHistory,
   updateLoadingStatus,
 } from '@/redux/slices/component';
 import { store } from '@/redux/store';
@@ -20,6 +21,7 @@ const useStorage = () => {
   const loadComponents = () => {
     dispatch(updateLoadingStatus(true));
     store.dispatch(initComponents(JSON.parse(value as string)));
+    store.dispatch(updateComponentHistory(false));
     setTimeout(() => {
       dispatch(updateLoadingStatus(false));
     }, 3000);

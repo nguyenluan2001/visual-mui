@@ -1,27 +1,27 @@
-import { useEffect, useState } from 'react';
 import { Box, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Provider, useDispatch, useSelector } from 'react-redux';
-import Header from './components/header/Header';
-import Sidebar from './components/sidebar/Sidebar';
-import Inspector from './components/inspector/Inspector';
+import { useSelector } from 'react-redux';
 import Editor from './components/editor/Editor';
-import { store } from './redux/store';
+import Header from './components/header/Header';
+import Inspector from './components/inspector/Inspector';
+import Sidebar from './components/sidebar/Sidebar';
+import { useHistory } from './hooks/useHistory';
 import { useStorage } from './hooks/useStorage';
-import { loadComponentDone } from './redux/slices/component';
+import { RootState } from './redux/store';
 
 function App() {
-  const [count, setCount] = useState(0);
   const { saveComponents, loadComponents } = useStorage();
-  const { components } = useSelector((store) => store?.component);
-  const dispatch = useDispatch();
+  const { saveHistory } = useHistory();
+  const { components } = useSelector((state: RootState) => state?.component);
   useEffect(() => {
     loadComponents();
-  }, []);
+  }, [loadComponents]);
   useEffect(() => {
     saveComponents();
-  }, [components]);
+    saveHistory();
+  }, [components, saveComponents, saveHistory]);
   return (
     <div className="App">
       <DndProvider backend={HTML5Backend}>
