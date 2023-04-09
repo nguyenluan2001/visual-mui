@@ -9,8 +9,11 @@ import RenderComponent from '@/components/editor/RenderComponent';
 import { mappingComponent } from '@/components/compoentList';
 import { convertCssToString } from './codeEditor ';
 
+type IComponent = IDnDComponent & {
+  index?: number;
+};
 const recursionComponents = (
-  component: IDnDComponent,
+  component: IComponent,
   components: IDnDComponent[]
 ): IDnDComponent | ReactNode => {
   if (component?.data?.children?.length === 0) {
@@ -28,11 +31,20 @@ const recursionComponents = (
     typeof component?.data?.children === 'object'
       ? component?.data?.children
       : [];
-  for (const uid of uids) {
+  for (let index = 0; index < uids?.length; index++) {
+    const uid = uids[index];
     const comp = components?.find(
       (item: IDnDComponent) => item?.data?.uid === uid
     ) as IDnDComponent;
-    childrenComponents.push(recursionComponents(comp, components));
+    childrenComponents.push(
+      recursionComponents(
+        {
+          ...comp,
+          index,
+        },
+        components
+      )
+    );
   }
   if (component?.data?.uid === 'root') {
     return React.createElement(

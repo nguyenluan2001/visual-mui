@@ -15,13 +15,14 @@ function App() {
   const { saveComponents, loadComponents } = useStorage();
   const { saveHistory } = useHistory();
   const { components } = useSelector((state: RootState) => state?.component);
+  console.log("🚀 ===== App ===== components:", components);
   useEffect(() => {
     loadComponents();
-  }, [loadComponents]);
+  }, []);
   useEffect(() => {
     saveComponents();
-    saveHistory();
-  }, [components, saveComponents, saveHistory]);
+    // saveHistory();
+  }, [components]);
   return (
     <div className="App">
       <DndProvider backend={HTML5Backend}>

@@ -1,11 +1,37 @@
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import chevronDown from '@iconify/icons-mdi/chevron-down';
+import { Icon } from '@iconify/react';
+import styled from '@emotion/styled';
 import { updateSelectedComponent } from '@/redux/slices/component';
 import ButtonPanel from './panels/components/ButtonPanel';
 import Header from './Header';
 import CustomCSS from './controls/CustomCss';
 import AvatarPanel from './panels/components/AvatarPanel';
+
+const StyledAccordion = styled(Accordion)(() => ({
+  '&': {
+    background: 'whitesmoke',
+    borderRadius: 'none',
+    boxShadow: 'none',
+  },
+  '&.Mui-expanded': {
+    margin: 0,
+  },
+  '& .MuiCollapse-root': {
+    background: 'white',
+  },
+}));
 
 function Inspector() {
   const { selectedComponent = null } = useSelector((store) => store?.component);
@@ -40,7 +66,7 @@ function Inspector() {
       <Box
         sx={{
           flex: 1,
-          p: 2,
+          // p: 2,
           background: 'white',
           boxSizing: 'border-box',
         }}
@@ -58,13 +84,36 @@ function Inspector() {
       <Button variant="contained" onClick={() => handleUpdateComponent()}>
         Change
       </Button> */}
-        {selectedComponent && selectedComponent.type === 'Button' && (
-          <ButtonPanel />
-        )}
-        {selectedComponent && selectedComponent.type === 'Avatar' && (
-          <AvatarPanel />
-        )}
-        {selectedComponent && <CustomCSS />}
+        <StyledAccordion>
+          <AccordionSummary
+            expandIcon={<Icon icon={chevronDown} />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Props</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {selectedComponent && selectedComponent.type === 'Button' && (
+              <ButtonPanel />
+            )}
+            {selectedComponent && selectedComponent.type === 'Avatar' && (
+              <AvatarPanel />
+            )}
+          </AccordionDetails>
+        </StyledAccordion>
+
+        <StyledAccordion>
+          <AccordionSummary
+            expandIcon={<Icon icon={chevronDown} />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Custom CSS</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {selectedComponent && <CustomCSS />}
+          </AccordionDetails>
+        </StyledAccordion>
       </Box>
     </Stack>
   );

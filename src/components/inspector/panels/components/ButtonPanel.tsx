@@ -13,9 +13,9 @@ const ButtonPanel = () => {
   const { selectedComponent } = useSelector((store) => store.component);
   return (
     <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
+      {/* <Typography variant="h6" sx={{ mb: 2 }}>
         Props
-      </Typography>
+      </Typography> */}
       <Stack direction="column" spacing={2} sx={{ width: '100%', pl: 1 }}>
         <TextControl
           label="Text"

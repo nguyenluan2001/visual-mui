@@ -131,6 +131,54 @@ export const componentSlice = createSlice({
     updateComponentHistory: (state, action) => {
       state.isHistory = action.payload;
     },
+    swapComponent: (state, action) => {
+      const currentState = current(state);
+      const components = currentState?.components;
+      const {
+        dragComponent,
+        hoverComponent,
+      }: { dragComponent: IDnDComponent; hoverComponent: IDnDComponent } =
+        action.payload;
+      console.log('🚀 ===== hoverComponent:', hoverComponent);
+      console.log('🚀 ===== dragComponent:', dragComponent);
+      // ====== Hover parent ======
+      const hoverParent = components?.find(
+        (item) => item?.data?.uid === hoverComponent?.data?.parent
+      );
+      let hoverChildren = hoverParent?.data?.children;
+      const hoverParentIndex = components?.findIndex(
+        (item) => item?.data?.uid === hoverParent?.data?.uid
+      );
+      // ====== Drag parent ======
+      const dragParent = components?.find(
+        (item) => item?.data?.uid === dragComponent?.data?.parent
+      );
+      let dragChildren = dragParent?.data?.children;
+      const dragParentIndex = components?.findIndex(
+        (item) => item?.data?.uid === dragParent?.data?.uid
+      );
+      const newComponents = JSON.parse(JSON.stringify(components));
+      if (!hoverChildren?.includes(dragComponent?.data?.uid)) {
+        console.log('🚀 ===== hoverChildren:', hoverChildren);
+        // hoverChildren = hoverChildren.push(dragComponent?.data?.uid);
+        hoverChildren = [...hoverChildren, dragComponent?.data?.uid];
+        const len = hoverChildren?.length;
+        if (hoverComponent?.index) {
+          [hoverChildren[hoverComponent?.index], hoverChildren[len - 1]] = [
+            dragComponent?.data?.uid,
+            hoverComponent?.data?.uid,
+          ];
+        }
+        dragChildren = dragChildren?.filter(
+          (item: string) => item !== dragComponent?.data?.uid
+        );
+        newComponents[hoverParentIndex].data.children = hoverChildren;
+        newComponents[dragParentIndex].data.children = dragChildren;
+        // state.components[hoverParentIndex].data.children = hoverChildren;
+        // state.components[dragParentIndex].data.children = dragChildren;
+      }
+      state.components = newComponents;
+    },
   },
 });
 
@@ -144,6 +192,7 @@ export const {
   updateLoadingStatus,
   clearComponents,
   updateComponentHistory,
+  swapComponent,
 } = componentSlice.actions;
 
 export default componentSlice.reducer;

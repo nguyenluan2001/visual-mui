@@ -9,4 +9,5 @@ export interface IComponent {
 export interface IDnDComponent {
   type: string;
   data: IComponent;
+  index?: number;
 }

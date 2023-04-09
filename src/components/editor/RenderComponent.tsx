@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import React, { Children } from 'react';
+import React, { Children, ReactNode } from 'react';
 import { useDispatch } from 'react-redux';
 import { IDnDComponent } from 'model';
 import { setSelectedComponent } from '@/redux/slices/component';

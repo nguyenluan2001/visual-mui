@@ -61,7 +61,7 @@ const CustomCSS = () => {
 
   return (
     <Box sx={{ mt: 1 }}>
-      <Typography variant="h6">Custom Style</Typography>
+      {/* <Typography variant="h6">Custom Style</Typography> */}
       <Box sx={{ pl: 1 }}>
         <Editor
           value={code}
