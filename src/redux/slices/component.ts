@@ -2,12 +2,14 @@ import { createSlice, current } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { IComponent, IDnDComponent } from 'model';
 import { v4 as uuidv4 } from 'uuid';
-import { uniqBy, remove } from 'lodash';
+import { uniqBy, remove, isEqual } from 'lodash';
+import produce from 'immer';
 
 export interface ComponentState {
   components: IDnDComponent[] | [];
   selectedComponent: IDnDComponent | null;
   isLoading?: boolean;
+  previousSwap: [number, number];
 }
 
 const initialState: ComponentState = {
@@ -149,6 +151,14 @@ export const componentSlice = createSlice({
       const hoverParentIndex = components?.findIndex(
         (item) => item?.data?.uid === hoverParent?.data?.uid
       );
+      const hoverIndex = hoverChildren?.findIndex(
+        (item) => item === hoverComponent?.data?.uid
+      );
+      const dragIndex = hoverChildren?.findIndex(
+        (item) => item === dragComponent?.data?.uid
+      );
+      console.log('🚀 ===== hoverParent:', hoverParent);
+      console.log('🚀 ===== hoverIndex:', hoverIndex);
       // ====== Drag parent ======
       const dragParent = components?.find(
         (item) => item?.data?.uid === dragComponent?.data?.parent
@@ -158,16 +168,20 @@ export const componentSlice = createSlice({
         (item) => item?.data?.uid === dragParent?.data?.uid
       );
       const newComponents = JSON.parse(JSON.stringify(components));
+      if (isEqual(currentState.previousSwap, [hoverIndex, dragIndex]))
+        return false;
       if (!hoverChildren?.includes(dragComponent?.data?.uid)) {
+        hoverChildren = [...hoverChildren, dragComponent?.data?.uid];
         console.log('🚀 ===== hoverChildren:', hoverChildren);
         // hoverChildren = hoverChildren.push(dragComponent?.data?.uid);
-        hoverChildren = [...hoverChildren, dragComponent?.data?.uid];
         const len = hoverChildren?.length;
         if (hoverComponent?.index) {
-          [hoverChildren[hoverComponent?.index], hoverChildren[len - 1]] = [
-            dragComponent?.data?.uid,
-            hoverComponent?.data?.uid,
-          ];
+          hoverChildren = produce(hoverChildren, (draftState: string[]) => {
+            [draftState[hoverIndex], draftState[len - 1]] = [
+              dragComponent?.data?.uid,
+              hoverComponent?.data?.uid,
+            ];
+          });
         }
         dragChildren = dragChildren?.filter(
           (item: string) => item !== dragComponent?.data?.uid
@@ -176,6 +190,17 @@ export const componentSlice = createSlice({
         newComponents[dragParentIndex].data.children = dragChildren;
         // state.components[hoverParentIndex].data.children = hoverChildren;
         // state.components[dragParentIndex].data.children = dragChildren;
+      } else if (hoverComponent?.index) {
+        const nextState = produce(hoverChildren, (draftState: string[]) => {
+          // draftState chính là 1 bản sao của baseState,
+          // ta có thể thay đổi draftState tùy ý mà không sợ ảnh hưởng đến baseState
+          [draftState[hoverIndex], draftState[dragIndex]] = [
+            draftState[dragIndex],
+            draftState[hoverIndex],
+          ];
+        });
+        newComponents[hoverParentIndex].data.children = nextState;
+        state.previousSwap = [dragIndex, hoverIndex];
       }
       state.components = newComponents;
     },
