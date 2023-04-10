@@ -1,16 +1,20 @@
 import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import { IDnDComponent } from 'model';
 import { useDrag, useDrop } from 'react-dnd';
 import type { Identifier, XYCoord } from 'dnd-core';
 import { setSelectedComponent, swapComponent } from '@/redux/slices/component';
 import componentsList, { mappingComponent } from '../compoentList';
+import { RootState } from '@/redux/store';
 
 const SingleComponent: React.FC<{ component: IDnDComponent }> = ({
   component,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const { selectedComponent } = useSelector(
+    (store: RootState) => store.component
+  );
   const dispatch = useDispatch();
   // const [{ handlerId }, drop] = useDrop<
   //   DragItem,
@@ -152,6 +156,13 @@ const SingleComponent: React.FC<{ component: IDnDComponent }> = ({
     mappingComponent[component?.type],
     {
       ...component?.data?.props,
+      sx: {
+        ...component?.data?.props?.sx,
+        border:
+          component?.data?.uid === selectedComponent?.data?.uid
+            ? '2px solid blue'
+            : component?.data?.props?.sx?.border,
+      },
       onClick: (e) => onClickComponent(e),
       ref,
     },

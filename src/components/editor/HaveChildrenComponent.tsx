@@ -8,13 +8,14 @@ import { isEmpty } from 'lodash';
 import { addComponent, setSelectedComponent } from '@/redux/slices/component';
 import componentsList, { mappingComponent } from '../compoentList';
 import RenderComponent from './RenderComponent';
+import { RootState } from '@/redux/store';
 
 const HaveChildrenComponent: React.FC<{
   component: IDnDComponent;
   children: IDnDComponent[];
 }> = ({ component, children }) => {
   const { components, selectedComponent } = useSelector(
-    (store) => store.component
+    (store: RootState) => store.component
   );
   // const [childrenComponents, setChildrenComponents] = useState<IDnDComponent[]>(
   //   []

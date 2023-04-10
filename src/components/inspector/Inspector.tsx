@@ -4,20 +4,27 @@ import {
   AccordionSummary,
   Box,
   Button,
+  IconButton,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import chevronDown from '@iconify/icons-mdi/chevron-down';
+import cogIcon from '@iconify/icons-mdi/cog';
 import { Icon } from '@iconify/react';
 import styled from '@emotion/styled';
-import { updateSelectedComponent } from '@/redux/slices/component';
+import { IDnDComponent } from 'model';
+import {
+  setSelectedComponent,
+  updateSelectedComponent,
+} from '@/redux/slices/component';
 import ButtonPanel from './panels/components/ButtonPanel';
 import Header from './Header';
 import CustomCSS from './controls/CustomCss';
 import AvatarPanel from './panels/components/AvatarPanel';
+import { RootState } from '@/redux/store';
 
 const StyledAccordion = styled(Accordion)(() => ({
   '&': {
@@ -34,7 +41,9 @@ const StyledAccordion = styled(Accordion)(() => ({
 }));
 
 function Inspector() {
-  const { selectedComponent = null } = useSelector((store) => store?.component);
+  const { selectedComponent = null, components } = useSelector(
+    (store: RootState) => store?.component
+  );
   console.log('🚀 ===== Inspector ===== selectedComponent:', selectedComponent);
   const dispatch = useDispatch();
   const handleUpdateComponent = () => {
@@ -52,6 +61,16 @@ function Inspector() {
     console.log('🚀 ===== handleUpdateComponent ===== newData:', newData);
     dispatch(updateSelectedComponent(newData));
   };
+  const parentComponent = useMemo(() => {
+    return components?.find(
+      (item) => item?.data?.uid === selectedComponent?.data?.parent
+    );
+  }, [selectedComponent]);
+  const childrenComponent: IDnDComponent[] = useMemo(() => {
+    return components?.filter(
+      (item) => item?.data?.parent === selectedComponent?.data?.uid
+    );
+  }, [selectedComponent, components]);
   return (
     <Stack
       direction="column"
@@ -101,7 +120,32 @@ function Inspector() {
             )}
           </AccordionDetails>
         </StyledAccordion>
-
+        <StyledAccordion>
+          <AccordionSummary
+            expandIcon={<Icon icon={chevronDown} />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Parent</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <ComponentItem component={parentComponent} />
+          </AccordionDetails>
+        </StyledAccordion>
+        <StyledAccordion>
+          <AccordionSummary
+            expandIcon={<Icon icon={chevronDown} />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Children</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {childrenComponent?.map((item) => (
+              <ComponentItem component={item} key={item?.data?.uid} />
+            ))}
+          </AccordionDetails>
+        </StyledAccordion>
         <StyledAccordion>
           <AccordionSummary
             expandIcon={<Icon icon={chevronDown} />}
@@ -118,5 +162,20 @@ function Inspector() {
     </Stack>
   );
 }
-
+const ComponentItem: React.FC<{ component: IDnDComponent | undefined }> = ({
+  component,
+}) => {
+  const dispatch = useDispatch();
+  const handleClickInspect = () => {
+    dispatch(setSelectedComponent(component));
+  };
+  return (
+    <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Typography>{component?.type}</Typography>
+      <IconButton onClick={handleClickInspect}>
+        <Icon icon={cogIcon} />
+      </IconButton>
+    </Stack>
+  );
+};
 export default Inspector;
