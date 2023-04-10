@@ -1,4 +1,11 @@
-import { Avatar, Button, Switch, Box } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  Switch,
+  Box,
+  TextField,
+  Autocomplete,
+} from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 
 type MenuItem = Record<string, string | any>;
@@ -48,6 +55,27 @@ export const menuList: MenuList = {
       },
     },
   },
+  Autocomplete: {
+    uid: uuidv4(),
+    directory: '@mui/material',
+    children: [],
+    props: {
+      sx: {
+        width: 300,
+      },
+      // renderInput: (params) => <TextField {...params} label="Movie" />,
+      renderInput: {
+        isFunction: true,
+        function: '(params) => <TextField {...params}/>',
+      },
+      options: [
+        { label: 'The Shawshank Redemption', year: 1994 },
+        { label: 'The Godfather', year: 1972 },
+        { label: 'The Godfather: Part II', year: 1974 },
+        { label: 'The Dark Knight', year: 2008 },
+      ],
+    },
+  },
 };
 
 export const mappingComponent: Record<string, any> = {
@@ -55,7 +83,14 @@ export const mappingComponent: Record<string, any> = {
   Avatar,
   Switch,
   Box,
+  Autocomplete,
 };
-const componentsList: string[] = ['Button', 'Avatar', 'Switch', 'Box'];
+const componentsList: string[] = [
+  'Button',
+  'Avatar',
+  'Switch',
+  'Box',
+  'Autocomplete',
+];
 
 export default componentsList;

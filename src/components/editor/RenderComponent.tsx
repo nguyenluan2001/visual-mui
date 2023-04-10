@@ -27,7 +27,8 @@ const RenderComponent: React.FC<{
   switch (component?.type) {
     case 'Button':
     case 'Avatar':
-    case 'Switch': {
+    case 'Switch':
+    case 'Autocomplete': {
       return <SingleComponent component={component} />;
     }
     case 'Box': {

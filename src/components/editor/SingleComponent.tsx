@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 import { IDnDComponent } from 'model';
@@ -16,6 +16,28 @@ const SingleComponent: React.FC<{ component: IDnDComponent }> = ({
     (store: RootState) => store.component
   );
   const dispatch = useDispatch();
+  const props = useMemo(() => {
+    return Object.entries(component?.data?.props)
+      ?.map((item) => {
+        const [key, value] = [...item];
+        if ('isFunction' in value && value?.isFunction) {
+          // const functionString = value?.function?.slice(
+          //   0,
+          //   value?.function?.length
+          // );
+          value = new Function(`return ${value?.function}`)();
+        }
+        return [key, value];
+      })
+      ?.reduce((pre, current) => {
+        const [key, value] = current;
+        return {
+          ...pre,
+          [key]: value,
+        };
+      }, {});
+  }, [component]);
+  console.log('🚀 ===== props ===== props:', props);
   // const [{ handlerId }, drop] = useDrop<
   //   DragItem,
   //   void,
