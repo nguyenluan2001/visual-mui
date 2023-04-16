@@ -1,4 +1,11 @@
-import { Avatar, Box, Button, Switch } from '@mui/material';
+import {
+  Autocomplete,
+  Avatar,
+  Box,
+  Button,
+  Switch,
+  TextField,
+} from '@mui/material';
 import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -134,12 +141,6 @@ function Editor() {
           data-component="root"
         >
           {renderComponents}
-          {/* {components
-        ?.filter((component) => component?.data?.parent === 'root')
-        ?.map((component) => (
-          <RenderComponent component={component} />
-        ))} */}
-          {/* <Test /> */}
         </Box>
         <Pane maxSize="70%">
           <CodePanel />

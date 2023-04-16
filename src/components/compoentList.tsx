@@ -1,12 +1,6 @@
-import {
-  Avatar,
-  Button,
-  Switch,
-  Box,
-  TextField,
-  Autocomplete,
-} from '@mui/material';
+import { Avatar, Button, Switch, Box, TextField } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
+import Autocomplete from './customComponent/Autocomplete';
 
 type MenuItem = Record<string, string | any>;
 type MenuList = Record<string, MenuItem>;
@@ -63,11 +57,13 @@ export const menuList: MenuList = {
       sx: {
         width: 300,
       },
+      multiple: false,
+      // defaultValue: [{ label: 'The Shawshank Redemption', year: 1994 }],
       // renderInput: (params) => <TextField {...params} label="Movie" />,
-      renderInput: {
-        isFunction: true,
-        function: '(params) => <TextField {...params}/>',
-      },
+      // renderInput: {
+      //   isFunction: true,
+      //   function: '(params) => <TextField {...params}/>',
+      // },
       options: [
         { label: 'The Shawshank Redemption', year: 1994 },
         { label: 'The Godfather', year: 1972 },

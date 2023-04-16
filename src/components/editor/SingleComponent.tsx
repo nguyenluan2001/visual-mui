@@ -20,13 +20,13 @@ const SingleComponent: React.FC<{ component: IDnDComponent }> = ({
     return Object.entries(component?.data?.props)
       ?.map((item) => {
         const [key, value] = [...item];
-        if ('isFunction' in value && value?.isFunction) {
-          // const functionString = value?.function?.slice(
-          //   0,
-          //   value?.function?.length
-          // );
-          value = new Function(`return ${value?.function}`)();
-        }
+        // if ('isFunction' in value && value?.isFunction) {
+        //   // const functionString = value?.function?.slice(
+        //   //   0,
+        //   //   value?.function?.length
+        //   // );
+        //   // value = new Function('params', `return ${value?.function}`)();
+        // }
         return [key, value];
       })
       ?.reduce((pre, current) => {
