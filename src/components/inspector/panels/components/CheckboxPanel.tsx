@@ -8,25 +8,26 @@ import SizeControl from '../../controls/SizeControl';
 import DisableControl from '../../controls/DisableControl';
 import TextControl from '../../controls/TextControl';
 import IconControl from '../../controls/IconControl';
-import MultipleControl from '../../controls/MultipleControl';
-import CodePanel from '../../controls/CodePanel';
+import CheckControl from '../../controls/CheckControl';
 
-const AutocompletePanel = () => {
+const CheckboxPanel = () => {
   const { selectedComponent } = useSelector((store) => store.component);
   return (
     <Box>
-      {/* <Typography variant="h6" sx={{ mb: 2 }}>
-        Props
-      </Typography> */}
       <Stack direction="column" spacing={2} sx={{ width: '100%', pl: 1 }}>
+        <ColorControl
+          colors={COLORS}
+          value={selectedComponent?.data?.props?.color}
+        />
+        <SizeControl
+          sizes={SIZES}
+          value={selectedComponent?.data?.props?.size}
+        />
         <DisableControl value={selectedComponent?.data?.props?.disabled} />
-        {/* <MultipleControl value={selectedComponent?.data?.props?.multiple} /> */}
-        {/* <CodePanel
-          data={JSON.stringify(selectedComponent?.data?.props?.options)}
-        /> */}
+        <CheckControl value={selectedComponent?.data?.props?.checked} />
       </Stack>
     </Box>
   );
 };
 
-export default AutocompletePanel;
+export default CheckboxPanel;

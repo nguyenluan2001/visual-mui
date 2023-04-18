@@ -9,6 +9,7 @@ import { addComponent, setSelectedComponent } from '@/redux/slices/component';
 import componentsList, { mappingComponent } from '../compoentList';
 import RenderComponent from './RenderComponent';
 import { RootState } from '@/redux/store';
+import { formatComponent } from '@/utils/formatComponent';
 
 const HaveChildrenComponent: React.FC<{
   component: IDnDComponent;
@@ -57,14 +58,15 @@ const HaveChildrenComponent: React.FC<{
       const didDrop = monitor.didDrop();
       if (!didDrop) {
         dispatch(
-          addComponent({
-            ...item,
-            data: {
-              ...item?.data,
-              uid: uuidv4(),
-              parent: component?.data?.uid,
-            },
-          })
+          // addComponent({
+          //   ...item,
+          //   data: {
+          //     ...item?.data,
+          //     // uid: uuidv4(),
+          //     parent: component?.data?.uid,
+          //   },
+          // })
+          addComponent(formatComponent(item, component?.data?.uid))
         );
       }
       // setComponentRoot((pre) => [...pre, item]);

@@ -2,7 +2,7 @@ import { createSlice, current } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { IComponent, IDnDComponent } from 'model';
 import { v4 as uuidv4 } from 'uuid';
-import { uniqBy, remove, isEqual } from 'lodash';
+import { uniqBy, remove, isEqual, isEmpty } from 'lodash';
 import produce from 'immer';
 
 export interface ComponentState {
@@ -48,22 +48,26 @@ export const componentSlice = createSlice({
         ...currentState?.components,
         action.payload,
       ]);
-      const components = [...currentState?.components, action.payload]?.map(
-        (item) => {
-          if (item?.data?.uid === data?.parent) {
-            // item?.data?.children.push(data?.uid);
-            // return item;
-            return {
-              ...item,
-              data: {
-                ...item?.data,
-                children: [...(item?.data?.children || []), data?.uid],
-              },
-            };
-          }
-          return item;
+      const flattenComponents = [
+        ...currentState?.components,
+        action.payload,
+        ...(!isEmpty(data?.defaultChildren) ? data?.defaultChildren : []),
+      ];
+      console.log('🚀 ===== flattenComponents:', flattenComponents);
+      const components = flattenComponents?.map((item) => {
+        if (item?.data?.uid === data?.parent) {
+          // item?.data?.children.push(data?.uid);
+          // return item;
+          return {
+            ...item,
+            data: {
+              ...item?.data,
+              children: [...(item?.data?.children || []), data?.uid],
+            },
+          };
         }
-      );
+        return item;
+      });
       console.log('🚀 ===== components:', components);
       state.components = components;
       state.isHistory = false;

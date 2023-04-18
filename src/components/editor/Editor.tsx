@@ -25,6 +25,7 @@ import { recursionComponents, recursionImport } from '@/utils/recursion';
 import Loader from '../common/Loader';
 import CodePanel from '../CodePanel';
 import { RootState } from '@/redux/store';
+import { formatComponent } from '@/utils/formatComponent';
 
 function Editor() {
   const [componentRoot, setComponentRoot] = useState<any>(null);
@@ -47,14 +48,15 @@ function Editor() {
       const didDrop = monitor.didDrop();
       if (!didDrop) {
         dispatch(
-          addComponent({
-            ...item,
-            data: {
-              ...item?.data,
-              uid: uuidv4(),
-              parent: 'root',
-            },
-          })
+          // addComponent({
+          //   ...item,
+          //   data: {
+          //     ...item?.data,
+          //     // uid: uuidv4(),
+          //     parent: 'root',
+          //   },
+          // })
+          addComponent(formatComponent(item, 'root'))
         );
         // setComponentRoot((pre) => [...pre, item]);
       }

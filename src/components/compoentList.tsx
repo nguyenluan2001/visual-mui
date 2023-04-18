@@ -1,6 +1,15 @@
-import { Avatar, Button, Switch, Box, TextField } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  Switch,
+  Box,
+  TextField,
+  Card,
+  CardHeader,
+} from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import Autocomplete from './customComponent/Autocomplete';
+import Checkbox from './customComponent/Checkbox';
 
 type MenuItem = Record<string, string | any>;
 type MenuList = Record<string, MenuItem>;
@@ -72,6 +81,53 @@ export const menuList: MenuList = {
       ],
     },
   },
+  Checkbox: {
+    uid: uuidv4(),
+    directory: '@mui/material',
+    children: '',
+    props: {
+      disabled: false,
+      checked: true,
+      size: 'medium',
+      color: 'primary',
+      sx: {},
+    },
+  },
+  Card: (() => {
+    const parentUID = uuidv4();
+    const child_1_UID = uuidv4();
+    console.log('🚀 ===== parentUID:', parentUID);
+    return {
+      uid: parentUID,
+      directory: '@mui/material',
+      children: [child_1_UID],
+      defaultChildren: [
+        {
+          data: {
+            uid: child_1_UID,
+            directory: '@mui/material',
+            props: {
+              children: [],
+              sx: {
+                width: '100%',
+                minHeight: '50px',
+                border: '1px dashed black',
+              },
+            },
+            parent: parentUID,
+          },
+          type: 'CardHeader',
+        },
+      ],
+      props: {
+        sx: {
+          width: '100%',
+          minHeight: '100px',
+          border: '1px dashed black',
+        },
+      },
+    };
+  })(),
 };
 
 export const mappingComponent: Record<string, any> = {
@@ -80,6 +136,9 @@ export const mappingComponent: Record<string, any> = {
   Switch,
   Box,
   Autocomplete,
+  Checkbox,
+  Card,
+  CardHeader,
 };
 const componentsList: string[] = [
   'Button',
@@ -87,6 +146,9 @@ const componentsList: string[] = [
   'Switch',
   'Box',
   'Autocomplete',
+  'Checkbox',
+  'Card',
+  'CardHeader',
 ];
 
 export default componentsList;

@@ -18,6 +18,8 @@ const convertCssToString = (
   css: Record<string, string>,
   isDoubleQuote = false
 ): string => {
+  console.log('🚀 ===== css:', css);
+  if (!css) return '';
   return Object.entries(css)?.reduce((pre, current) => {
     const [key, value] = current;
     if (key) {

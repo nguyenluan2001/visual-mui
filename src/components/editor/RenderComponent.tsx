@@ -28,10 +28,13 @@ const RenderComponent: React.FC<{
     case 'Button':
     case 'Avatar':
     case 'Switch':
-    case 'Autocomplete': {
+    case 'Autocomplete':
+    case 'Checkbox': {
       return <SingleComponent component={component} />;
     }
-    case 'Box': {
+    case 'Box':
+    case 'Card':
+    case 'CardHeader': {
       return (
         <HaveChildrenComponent component={component}>
           {children}
