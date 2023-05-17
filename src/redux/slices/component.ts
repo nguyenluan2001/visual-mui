@@ -44,10 +44,11 @@ export const componentSlice = createSlice({
     addComponent: (state, action) => {
       const currentState = current(state);
       const { data } = action.payload;
-      console.log('🚀 ===== data:', [
-        ...currentState?.components,
-        action.payload,
-      ]);
+      console.log("🚀 ===== data:", data);
+      // console.log('🚀 ===== data:', [
+      //   ...currentState?.components,
+      //   action.payload,
+      // ]);
       const flattenComponents = [
         ...currentState?.components,
         action.payload,

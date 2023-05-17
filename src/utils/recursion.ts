@@ -16,6 +16,7 @@ const recursionComponents = (
   component: IComponent,
   components: IDnDComponent[]
 ): IDnDComponent | ReactNode => {
+  console.log('🚀 ===== component -------:', component);
   if (component?.data?.children?.length === 0) {
     return React.createElement(
       RenderComponent,

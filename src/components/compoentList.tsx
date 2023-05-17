@@ -6,6 +6,8 @@ import {
   TextField,
   Card,
   CardHeader,
+  CardContent,
+  Grid,
 } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import Autocomplete from './customComponent/Autocomplete';
@@ -110,13 +112,13 @@ export const menuList: MenuList = {
               children: [],
               sx: {
                 width: '100%',
-                minHeight: '50px',
+                minHeight: '50%',
                 border: '1px dashed black',
               },
             },
             parent: parentUID,
           },
-          type: 'CardHeader',
+          type: 'CardContent',
         },
       ],
       props: {
@@ -128,6 +130,20 @@ export const menuList: MenuList = {
       },
     };
   })(),
+  Grid: {
+    uid: uuidv4(),
+    directory: '@mui/material',
+    children: [],
+    props: {
+      sx: {
+        border: '1px dashed black',
+        minHeight: '50px',
+        width: '100%',
+        p: 2,
+        boxSizing: 'border-box',
+      },
+    },
+  },
 };
 
 export const mappingComponent: Record<string, any> = {
@@ -138,7 +154,8 @@ export const mappingComponent: Record<string, any> = {
   Autocomplete,
   Checkbox,
   Card,
-  CardHeader,
+  CardContent,
+  Grid,
 };
 const componentsList: string[] = [
   'Button',
@@ -149,6 +166,8 @@ const componentsList: string[] = [
   'Checkbox',
   'Card',
   'CardHeader',
+  'CardContent',
+  'Grid',
 ];
 
 export default componentsList;

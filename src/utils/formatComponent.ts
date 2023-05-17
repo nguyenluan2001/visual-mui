@@ -33,6 +33,7 @@ const formatComponent = (
             ...item?.data,
             uid: childrenUID[index],
             parent: parentUID,
+            children: [],
           },
         };
       }),
