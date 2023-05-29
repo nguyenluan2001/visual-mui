@@ -11,7 +11,9 @@ const GridBreakPointControl: React.FC<IProps> = ({ value }) => {
   const { updateSelectedComponentProps } = useForm();
   return (
     <>
-      <Typography sx={{ color: 'black' }}>Breakpoint</Typography>
+      <Typography sx={{ color: 'black' }} variant="h6">
+        Breakpoint
+      </Typography>
       <Stack
         direction="column"
         // justifyContent="space-between"

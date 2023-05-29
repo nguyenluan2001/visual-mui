@@ -18,17 +18,16 @@ const BehaviorControl: React.FC<IProps> = ({ behaviors, value }) => {
   const { updateSelectedComponentProps } = useForm();
   const onChange = async (behavior: string, _value: boolean) => {
     if (behavior === 'container') {
-      await Promise.resolve().then(() => {
-        updateSelectedComponentProps('container', _value);
-      });
-      await Promise.resolve().then(() => {
-        updateSelectedComponentProps('item', !_value);
-      });
+      // await Promise.resolve().then(() => {
+      //   updateSelectedComponentProps('container', _value);
+      // });
+      // await Promise.resolve().then(() => {
+      //   updateSelectedComponentProps('item', !_value);
+      // });
+      updateSelectedComponentProps(['container', 'item'], [_value, !_value]);
+      // });
     } else {
-      updateSelectedComponentProps('item', _value);
-      setTimeout(() => {
-        updateSelectedComponentProps('container', !_value);
-      }, 0);
+      updateSelectedComponentProps(['container', 'item'], [!_value, _value]);
     }
   };
   return (
