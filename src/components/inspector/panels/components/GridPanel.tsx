@@ -76,6 +76,7 @@ const GridPanel = () => {
           label="Row spacing"
           value={selectedComponent?.data?.props?.rowSpacing}
           updateField="rowSpacing"
+          type="number"
         />
       </Stack>
     </Box>

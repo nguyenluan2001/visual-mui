@@ -15,6 +15,7 @@ const HaveChildrenComponent: React.FC<{
   component: IDnDComponent;
   children: IDnDComponent[];
 }> = ({ component, children }) => {
+  console.log("🚀 ===== component:", component);
   const { components, selectedComponent } = useSelector(
     (store: RootState) => store.component
   );

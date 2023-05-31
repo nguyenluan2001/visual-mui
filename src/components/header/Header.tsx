@@ -61,11 +61,12 @@ function Header() {
         px: 2,
       }}
     >
-      <Box sx={{ width: '15%' }}>
-        <Typography variant="h6" sx={{ color: 'white' }}>
+      <Stack direction="row" alignItems="center" sx={{ width: '15%', mr: 2 }}>
+        <img src="/public/mui-logo.png" style={{ height: '100%' }} alt="logo" />
+        <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
           MUIPlayground
         </Typography>
-      </Box>
+      </Stack>
       {/* <Button onClick={handleSaveComponents}>Save components</Button> */}
       <EditorMenu />
       <Button

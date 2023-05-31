@@ -6,7 +6,13 @@ import {
   Switch,
   TextField,
 } from '@mui/material';
-import React, { ReactNode, useEffect, useMemo, useState } from 'react';
+import React, {
+  ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+  MouseEventHandler,
+} from 'react';
 import { DropTargetMonitor, useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { IComponent, IDnDComponent } from 'model';
@@ -75,7 +81,7 @@ function Editor() {
       setComponentRoot(root);
     }
   }, [components]);
-  const onClickEditor = (e) => {
+  const onClickEditor = (e: React.MouseEvent<HTMLDivElement>) => {
     const componentType = e.target.dataset.component;
     if (componentType === 'root' && componentRoot) {
       dispatch(setSelectedComponent(componentRoot));

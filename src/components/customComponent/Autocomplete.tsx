@@ -1,33 +1,53 @@
 import React from 'react';
 import { Box, Autocomplete as MUIAutocomplete, TextField } from '@mui/material';
 
-const Autocomplete = (props) => {
-  console.log('🚀 ===== Autocomplete ===== props:', props);
+declare type OptionItem = {
+  label: string;
+  year: number;
+};
+declare type Props = {
+  onClick: () => void;
+  multiple: boolean;
+  options: OptionItem[];
+};
+const Autocomplete: React.FC<Props> = ({ onClick, multiple, options }) => {
   return (
-    <Box sx={{ width: 'fit-content' }} onClick={props?.onClick}>
-      {props?.multiple ? (
+    <Box sx={{ width: 'fit-content' }} onClick={onClick}>
+      {multiple ? (
         <MUIAutocomplete
-          {...props}
+          onClick={onClick}
+          multiple={multiple}
           id="combo-box-demo"
-          options={props?.options || []}
+          options={options || []}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="Movie" />}
-          defaultValue={[{ label: 'The Shawshank Redemption', year: 1994 }]}
+          defaultValue={
+            [
+              { label: 'The Shawshank Redemption', year: 1994 },
+            ] as unknown as typeof options
+          }
           // value={[{ label: 'The Shawshank Redemption', year: 1994 }] || null}
         />
       ) : (
         <MUIAutocomplete
-          {...props}
+          onClick={onClick}
+          multiple={multiple}
           id="combo-box-demo"
-          options={props?.options || []}
+          options={(options || []) as OptionItem[]}
           sx={{ width: 300 }}
           renderInput={(params) => <TextField {...params} label="Movie2" />}
-          defaultValue={{ label: 'The Shawshank Redemption', year: 1994 }}
-          value={{ label: 'The Shawshank Redemption', year: 1994 }}
+          defaultValue={
+            {
+              label: 'The Shawshank Redemption',
+              year: 1994,
+            } as OptionItem
+          }
+          value={
+            { label: 'The Shawshank Redemption', year: 1994 } as OptionItem
+          }
         />
       )}
     </Box>
   );
 };
-const SwitchAutocomplete = ({ multiple }) => {};
 export default Autocomplete;

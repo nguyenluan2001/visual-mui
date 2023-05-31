@@ -35,6 +35,7 @@ const RenderComponent: React.FC<{
     case 'Box':
     case 'Card':
     case 'CardContent':
+    case 'Stack':
     case 'Grid': {
       return (
         <HaveChildrenComponent component={component}>

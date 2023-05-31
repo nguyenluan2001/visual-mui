@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Checkbox as MUICheckbox, FormControlLabel } from '@mui/material';
+import { Box, Checkbox as MUICheckbox } from '@mui/material';
+import React from 'react';
 
-const Checkbox = ({ onClick, ...props }) => {
+declare type Props = {
+  onClick: () => void;
+};
+const Checkbox: React.FC<Props> = ({ onClick, ...props }) => {
   //   const [isChecked, setIsChecked] = useState<boolean>(false);
   //   console.log('🚀 ===== Checkbox ===== isChecked:', isChecked);
   //   useEffect(() => {

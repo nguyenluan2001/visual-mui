@@ -28,6 +28,7 @@ import { RootState } from '@/redux/store';
 import AutocompletePanel from './panels/components/AutocompletePanel';
 import CheckboxPanel from './panels/components/CheckboxPanel';
 import GridPanel from './panels/components/GridPanel';
+import StackPanel from './panels/components/StackPanel';
 
 const StyledAccordion = styled(Accordion)(() => ({
   '&': {
@@ -129,6 +130,9 @@ function Inspector() {
             )}
             {selectedComponent && selectedComponent.type === 'Grid' && (
               <GridPanel />
+            )}
+            {selectedComponent && selectedComponent.type === 'Stack' && (
+              <StackPanel />
             )}
           </AccordionDetails>
         </StyledAccordion>

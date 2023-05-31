@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardContent,
   Grid,
+  Stack,
 } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import Autocomplete from './customComponent/Autocomplete';
@@ -144,6 +145,20 @@ export const menuList: MenuList = {
       },
     },
   },
+  Stack: {
+    uid: uuidv4(),
+    directory: '@mui/material',
+    children: [],
+    props: {
+      sx: {
+        border: '1px dashed black',
+        minHeight: '50px',
+        width: '100%',
+        p: 2,
+        boxSizing: 'border-box',
+      },
+    },
+  },
 };
 
 export const mappingComponent: Record<string, any> = {
@@ -156,6 +171,7 @@ export const mappingComponent: Record<string, any> = {
   Card,
   CardContent,
   Grid,
+  Stack,
 };
 const componentsList: string[] = [
   'Button',
@@ -168,6 +184,7 @@ const componentsList: string[] = [
   'CardHeader',
   'CardContent',
   'Grid',
+  'Stack',
 ];
 
 export default componentsList;

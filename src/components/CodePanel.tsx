@@ -1,6 +1,7 @@
+/* eslint-disable import/extensions */
 import { Box, Button, IconButton, Stack, Tooltip } from '@mui/material';
 import Highlight, { defaultProps } from 'prism-react-renderer';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { Key, ReactElement, useEffect, useState } from 'react';
 import Editor from 'react-simple-code-editor';
 import theme from 'prism-react-renderer/themes/nightOwl';
 import { useSelector } from 'react-redux';
@@ -37,9 +38,15 @@ const CodePanel = () => {
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <>
           {tokens.map((line, i) => (
-            <div {...getLineProps({ line, key: i })} key={line}>
+            <div
+              {...getLineProps({ line, key: i })}
+              key={line as unknown as Key}
+            >
               {line.map((token, key) => (
-                <span {...getTokenProps({ token, key })} key={token} />
+                <span
+                  {...getTokenProps({ token, key })}
+                  key={token as unknown as Key}
+                />
               ))}
             </div>
           ))}
@@ -109,7 +116,7 @@ const CodePanel = () => {
         onValueChange={onValueChange}
         highlight={highlight}
         padding={10}
-        style={styles.root}
+        style={styles.root as React.CSSProperties}
         disabled
       />
     </Box>
